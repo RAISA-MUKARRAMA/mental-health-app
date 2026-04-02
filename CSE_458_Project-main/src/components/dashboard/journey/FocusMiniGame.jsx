@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const FocusMiniGame = ({ onNext }) => {
   const [radius, setRadius] = useState(20);
   const [direction, setDirection] = useState(1);
-  const [time, setTime] = useState(15);
+  const [time, setTime] = useState(10);
   const [accuracy, setAccuracy] = useState([]);
 
   useEffect(() => {
