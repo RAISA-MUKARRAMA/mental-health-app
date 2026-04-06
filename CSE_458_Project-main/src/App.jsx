@@ -9,6 +9,8 @@ import LoginPage from './Pages/LoginPage';
 import RegisterPage from './Pages/RegisterPage';
 import DashboardPage from './Pages/DashboardPage';
 import ErrorTest from './pages/ErrorTest';
+import MentalHealthEducationPage from "./Pages/MentalHealthEducationPage";
+
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
           <Route path="/register" component={RegisterPage} />
           <Route path="/dashboard" component={DashboardPage} />
           <Route path="/error-test" component={ErrorTest} />
+          <Route path="/aboutus" component={MentalHealthEducationPage } />
 
           {/* Footer Component */}
          {/* Footer Component */}

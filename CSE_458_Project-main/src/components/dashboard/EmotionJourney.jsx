@@ -103,10 +103,76 @@ const EmotionJourney = ({ onComplete, onExit }) => {
 
       <div className="w-full max-w-xl px-6 flex flex-col items-center">
         {step === "finalResult" ? (
-          <div className="text-center">
-             {/* Use your getDominantEmotion results here */}
-             <button onClick={() => onComplete('happy')} className="bg-green-500 p-4">Finish</button>
-          </div>
+          (() => {
+            const total = Object.values(vector).reduce((a, b) => a + b, 0) || 1;
+            const normalizedScores = Object.fromEntries(
+              Object.entries(vector).map(([k, v]) => [k, (v / total).toFixed(2)])
+            );
+            const sortedScores = Object.entries(normalizedScores)
+              .sort((a, b) => b[1] - a[1]);
+            const dominantEmotion = sortedScores[0][0];
+
+            return (
+              /* Added max-h and overflow-y-auto to handle smaller screens */
+              <div className="w-full max-w-md bg-slate-800 rounded-3xl p-6 shadow-2xl text-center border border-slate-700 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                
+                {/* Header - Compact */}
+                <div className="mb-4">
+                  <h2 className="text-2xl font-bold text-white">Emotion Report</h2>
+                  <p className="text-xs text-slate-400">Dominant: 
+                    <span className="text-amber-400 uppercase font-mono ml-2">{dominantEmotion}</span>
+                  </p>
+                </div>
+
+                {/* Scrollable Content Area */}
+                <div className="space-y-4">
+                  {/* Quick Score Grid - Smaller padding */}
+                  <div className="grid grid-cols-3 gap-2">
+                    {sortedScores.slice(0, 3).map(([key, value]) => (
+                      <div key={key} className="bg-slate-900/50 rounded-xl p-2 border border-slate-700">
+                        <p className="capitalize text-[10px] text-slate-400">{key}</p>
+                        <p className="text-sm font-bold text-amber-400">{(value * 100).toFixed(0)}%</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Detailed Progress Bars - Compacted */}
+                  <div className="bg-slate-900/30 p-4 rounded-2xl space-y-3">
+                    {sortedScores.map(([key, value]) => (
+                      <div key={key} className="text-left">
+                        <div className="flex justify-between text-[11px] mb-1 capitalize text-slate-300">
+                          <span>{key}</span>
+                          <span className="font-mono text-amber-500">{(value * 100).toFixed(0)}%</span>
+                        </div>
+                        <div className="w-full bg-slate-700 rounded-full h-1.5">
+                          <div
+                            className="bg-amber-400 h-1.5 rounded-full transition-all duration-1000"
+                            style={{ width: `${value * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Footer / Navigation */}
+                <div className="mt-6 pt-4 border-t border-slate-700">
+                  <p className="text-[11px] text-slate-400 mb-4 italic">
+                    "Your results are ready. Let's find some inspiration."
+                  </p>
+                  <button
+                    onClick={() => onComplete(dominantEmotion)}
+                    className="w-full py-3 bg-green-500 hover:bg-green-400 text-black font-black rounded-xl transition-all transform active:scale-95 shadow-lg flex items-center justify-center gap-2"
+                  >
+                    GET MOTIVATION
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            );
+          })()
         ) : (
           <div key={step} className="w-full">
             {renderCurrentStep()}

@@ -146,6 +146,7 @@ const HomePage = ({ navigate: propNavigate }) => {
 
           {/* Premium CTA Card */}
           {!isAuthenticated && <Premium_CTA_Card navigate={navigate} />} {/* hide if logged in */}
+        
 
           {/* Feature badges */}
           <Featurebadges />
